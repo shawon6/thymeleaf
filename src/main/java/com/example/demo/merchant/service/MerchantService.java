@@ -1,7 +1,7 @@
 package com.example.demo.merchant.service;
 
 import com.example.demo.merchant.dto.MerchantDTO;
-import com.example.demo.merchant.entity.Merchent;
+import com.example.demo.merchant.entity.Merchant;
 import com.example.demo.merchant.repository.MerchantRepositoryDynamoDB;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -30,19 +30,11 @@ public class MerchantService {
 //	@Autowired
 //	private MerchantRepoReactive merchantRepoReactive;
 	
-	public void add(MerchantDTO model) throws Exception {
+	public void add(Merchant model) throws Exception {
 		if (model == null ) {
 			throw new Exception("Model can't be Null");
 		}
-		
-		Merchent m = convertToEntity(model);
-//		MerchantDTO checkDTO = getMerchantByKey(m);
-//		if (checkDTO!= null)
-//		if(checkDTO.getId()!=null) {
-//			throw new Exception("Already Exists");
-//		}
-		
-		merchantReporsitory.save(m);
+		merchantReporsitory.save(model);
 	}
 
 	
@@ -80,68 +72,68 @@ public class MerchantService {
 		return model;
 	}
 
-	public MerchantDTO getMerchantByKey(Merchent merchent) {
-		Merchent m = merchantReporsitory.findByKey(merchent);
+	public MerchantDTO getMerchantByKey(Merchant merchant) {
+		Merchant m = merchantReporsitory.findByKey(merchant);
 		MerchantDTO merchantDTO = new MerchantDTO();
 		if(m!= null)
 			 merchantDTO = convertToDTO(m);
 		return merchantDTO;
 	}
 
-	public List<MerchantDTO> getAllMerchant() {
-		List<MerchantDTO> merchantDTOlist = ConvertToDtoList(merchantReporsitory.getUsingQuery());
+	public List<Merchant> getAllMerchant() {
+		List<Merchant> merchantDTOlist = merchantReporsitory.getUsingQuery();
 		return merchantDTOlist;
 	}
 	
-	public Merchent convertToEntity(MerchantDTO model) {
-		Merchent merchent = modelMapper.map(model, Merchent.class);
-		return merchent;
+	public Merchant convertToEntity(MerchantDTO model) {
+		Merchant merchant = modelMapper.map(model, Merchant.class);
+		return merchant;
 	}
 
-	private MerchantDTO convertToDTO(Merchent merchent) {
-		MerchantDTO dto = modelMapper.map(merchent, MerchantDTO.class);
+	private MerchantDTO convertToDTO(Merchant merchant) {
+		MerchantDTO dto = modelMapper.map(merchant, MerchantDTO.class);
 		return dto;
 	}
 
 
-	private List<MerchantDTO> ConvertToDtoList(List<Merchent> mrchentList) {
+	private List<MerchantDTO> ConvertToDtoList(List<Merchant> mrchentList) {
 		List<MerchantDTO> MerchantDTOList = mrchentList.stream().map(entity -> convertToDTO(entity)).collect(Collectors.toList());
 		return MerchantDTOList;
 	}
 	
-	public Mono<Boolean> addMerchantUsingWebFlux(Merchent model) {
+	public Mono<Boolean> addMerchantUsingWebFlux(Merchant model) {
         return merchantReporsitory.addMerchantUsingWebFlux(model);
 	}
 
 	
-	public Mono<Boolean> deleteMerchantUsingWebFlux(Merchent model) {
+	public Mono<Boolean> deleteMerchantUsingWebFlux(Merchant model) {
         return merchantReporsitory.deleteMerchantUsingWebFlux(model);
 	}
 
 
 
-	public Mono<Merchent> getMerchantByIdUsingWebFlux(Merchent model) {
+	public Mono<Merchant> getMerchantByIdUsingWebFlux(Merchant model) {
 		
 		return merchantReporsitory.getMerchantByIdUsingWebFlux(model);
 	}
 
 
 
-	public Flux<Merchent> getAllMerchantByIdUsingWebFlux() {
+	public Flux<Merchant> getAllMerchantByIdUsingWebFlux() {
 		return merchantReporsitory.getAllMerchantByIdUsingWebFlux();
 	}
 
 
 
-	public Mono<Boolean> modMerchantUsingWebFlux( Merchent model) {
+	public Mono<Boolean> modMerchantUsingWebFlux( Merchant model) {
 		if(ObjectUtils.isEmpty(model.getNumber())){
 			return Mono.just(false);
 		}
 
-		return merchantReporsitory.getMerchantByIdUsingWebFlux(model).flatMap(merchent -> {
-			log.info(merchent.toString());
-			merchent.setNumber(model.getNumber());
-			return merchantReporsitory.addMerchantUsingWebFlux(merchent);
+		return merchantReporsitory.getMerchantByIdUsingWebFlux(model).flatMap(merchant -> {
+			log.info(merchant.toString());
+			merchant.setNumber(model.getNumber());
+			return merchantReporsitory.addMerchantUsingWebFlux(merchant);
 		});
 	}
 	

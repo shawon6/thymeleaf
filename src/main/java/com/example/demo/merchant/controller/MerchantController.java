@@ -2,7 +2,7 @@ package com.example.demo.merchant.controller;
 
 import com.example.demo.common.ResponseDTO;
 import com.example.demo.merchant.dto.MerchantDTO;
-import com.example.demo.merchant.entity.Merchent;
+import com.example.demo.merchant.entity.Merchant;
 import com.example.demo.merchant.service.MerchantService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,8 +33,8 @@ public class MerchantController {
 
 		model.addAttribute("something","Merchant Management");
 		model.addAttribute("merchant", Arrays.asList(
-				new Merchent("1",   "Ashik",   "01"),
-				new Merchent("2",   "Mahmud",  "02")
+				new Merchant("1",   "Ashik",   "01"),
+				new Merchant("2",   "Mahmud",  "02")
 		));
 		return "merchant1";
 	}
@@ -42,11 +42,12 @@ public class MerchantController {
 	@PostMapping("/addMerchant")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String addMerchant(@RequestBody MerchantDTO model) {
+	public String addMerchant(@RequestBody Merchant model) {
 		if(model == null) {
 			return null;
 		}
 		try {
+
 			merchantService.add(model);
 			return "Save Successfully";
 		}catch (Exception e) {
@@ -138,7 +139,7 @@ public class MerchantController {
 		ResponseDTO responseDTO = new ResponseDTO();
 		
 		try {
-			List<MerchantDTO> merchantDTOList = merchantService.getAllMerchant();
+			List<Merchant> merchantDTOList = merchantService.getAllMerchant();
 			responseDTO.setSuccess(true);
 			responseDTO.setData(merchantDTOList);
 			return responseDTO;
@@ -154,7 +155,7 @@ public class MerchantController {
 	@PostMapping("/addMerchantUsingWebFlux")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Mono<Boolean> addMerchantUsingWebFlux(@RequestBody Merchent model) {
+	public Mono<Boolean> addMerchantUsingWebFlux(@RequestBody Merchant model) {
 		
 		Mono<Boolean> merchantDTOList = merchantService.addMerchantUsingWebFlux(model);
 		return merchantDTOList;
@@ -165,7 +166,7 @@ public class MerchantController {
 	@PostMapping("/modMerchantUsingWebFlux")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Mono<Boolean> modMerchantUsingWebFlux(@Valid @RequestBody Merchent model) {
+	public Mono<Boolean> modMerchantUsingWebFlux(@Valid @RequestBody Merchant model) {
 		
 		Mono<Boolean> modResult = merchantService.modMerchantUsingWebFlux(model);
 		return modResult;
@@ -176,7 +177,7 @@ public class MerchantController {
 	@PostMapping("/deleteMerchantUsingWebFlux")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Mono<Boolean> deleteMerchantUsingWebFlux(@RequestBody Merchent model) {
+	public Mono<Boolean> deleteMerchantUsingWebFlux(@RequestBody Merchant model) {
 		
 		Mono<Boolean> merchantDTOlist = merchantService.deleteMerchantUsingWebFlux(model);
 		return merchantDTOlist;
@@ -187,9 +188,9 @@ public class MerchantController {
 	@PostMapping("/getMerchantByIdUsingWebFlux")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Mono<Merchent> getMerchantByIdUsingWebFlux(@Valid @RequestBody Merchent model){
+	public Mono<Merchant> getMerchantByIdUsingWebFlux(@Valid @RequestBody Merchant model){
 		
-		Mono<Merchent> merchantDTOlist = merchantService.getMerchantByIdUsingWebFlux(model);
+		Mono<Merchant> merchantDTOlist = merchantService.getMerchantByIdUsingWebFlux(model);
 		return merchantDTOlist;
 		
 	}
@@ -197,9 +198,9 @@ public class MerchantController {
 	@PostMapping("/getAllMerchantByIdUsingWebFlux")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Flux<Merchent> getAllMerchantByIdUsingWebFlux(){
+	public Flux<Merchant> getAllMerchantByIdUsingWebFlux(){
 		
-		Flux<Merchent> merchantDTOlist = merchantService.getAllMerchantByIdUsingWebFlux();
+		Flux<Merchant> merchantDTOlist = merchantService.getAllMerchantByIdUsingWebFlux();
 		return merchantDTOlist;
 		
 	}

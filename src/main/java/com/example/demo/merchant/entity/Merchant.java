@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamoDBTable(tableName = "sampleMerchant")
-public class Merchent {
+public class Merchant {
 	
 	@DynamoDBHashKey
 	private String id; // Never mention only id
