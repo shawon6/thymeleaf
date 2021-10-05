@@ -81,8 +81,7 @@ public class MerchantService {
 	}
 
 	public List<Merchant> getAllMerchant() {
-		List<Merchant> merchantDTOlist = merchantReporsitory.getUsingQuery();
-		return merchantDTOlist;
+		return merchantReporsitory.getAllMerchantByIdUsingWebFlux().collectList().block();
 	}
 	
 	public Merchant convertToEntity(MerchantDTO model) {
@@ -96,8 +95,8 @@ public class MerchantService {
 	}
 
 
-	private List<MerchantDTO> ConvertToDtoList(List<Merchant> mrchentList) {
-		List<MerchantDTO> MerchantDTOList = mrchentList.stream().map(entity -> convertToDTO(entity)).collect(Collectors.toList());
+	private List<MerchantDTO> ConvertToDtoList(List<Merchant> merchantList) {
+		List<MerchantDTO> MerchantDTOList = merchantList.stream().map(entity -> convertToDTO(entity)).collect(Collectors.toList());
 		return MerchantDTOList;
 	}
 	
